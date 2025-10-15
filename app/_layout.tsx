@@ -1,24 +1,47 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+import "@/global.css";
+import { useAuthStore } from "@/store/authStore";
+import { Stack } from "expo-router";
+import { HeroUINativeProvider } from "heroui-native";
+import { useEffect, useState } from "react";
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  const { isAuthenticated, checkAuth } = useAuthStore();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const init = async () => {
+      checkAuth();
+      setIsLoading(false);
+    };
+
+    init();
+  }, []);
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <HeroUINativeProvider>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
+        <Stack.Protected guard={isAuthenticated}>
+          <Stack.Screen
+            name="(tabs)"
+            options={{ headerShown: false }}
+          />
+        </Stack.Protected>
+
+        <Stack.Protected guard={!isAuthenticated}>
+          <Stack.Screen
+            name="index"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="login"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="register"
+            options={{ headerShown: false }}
+          />
+        </Stack.Protected>
       </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    </HeroUINativeProvider>
   );
 }
