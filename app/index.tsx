@@ -32,8 +32,8 @@ export default function Index() {
         </Text>
         <Button
           size="lg"
-          variant="primary"
-          className="w-1/2 mt-4"
+          variant="secondary"
+          className="w-1/2 mt-4 bg-black"
           onPress={() => {
             router.push("/login");
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);

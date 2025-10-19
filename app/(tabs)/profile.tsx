@@ -79,7 +79,7 @@ const Profile = () => {
         style={StyleSheet.absoluteFillObject}
       />
 
-      <Card className="w-11/12 max-w-md mt-12 bg-neutral-900 border-neutral-600">
+      <Card className="w-11/12 max-w-md mt-12 bg-black/75 border-neutral-600">
         <Card.Body>
           <Card.Description className="">
             {/* Image profile */}

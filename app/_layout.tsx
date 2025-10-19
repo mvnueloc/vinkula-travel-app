@@ -28,7 +28,13 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <KeyboardProvider>
         <SafeAreaProvider>
-          <HeroUINativeProvider>
+          <HeroUINativeProvider
+            config={{
+              colorScheme: "dark",
+              textProps: {
+                allowFontScaling: false,
+              },
+            }}>
             <Stack>
               <Stack.Protected guard={isAuthenticated}>
                 <Stack.Screen

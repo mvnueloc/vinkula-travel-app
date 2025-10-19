@@ -8,14 +8,32 @@ import React from "react";
 import { Alert, StyleSheet, Text, View } from "react-native";
 
 const Login = () => {
+  // Estados para los campos del formulario
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  // Estados de error para validación
+  const [emailError, setEmailError] = React.useState(false);
+  const [passwordError, setPasswordError] = React.useState(false);
+
   const [loading, setLoading] = React.useState(false);
 
   const { login } = useAuthStore();
 
   const handleLogin = async () => {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    if (email.trim() === "") {
+      setEmailError(true);
+      return;
+    } else {
+      setEmailError(false);
+    }
+    if (password.trim() === "") {
+      setPasswordError(true);
+      return;
+    } else {
+      setPasswordError(false);
+    }
+
     setLoading(true);
     try {
       const success = await login(email, password);
@@ -43,7 +61,7 @@ const Login = () => {
       <Text className="text-3xl font-semibold text-white mb-6">
         Iniciar sesión
       </Text>
-      <Card className="w-11/12 max-w-md ">
+      <Card className="w-11/12 max-w-md bg-black/75  border-blue-600">
         <Card.Body>
           <Card.Description>
             {/* Email */}
@@ -51,12 +69,19 @@ const Login = () => {
               className="w-full"
               isRequired
               isDisabled={loading}
-              isInvalid={false}>
-              <TextField.Label>Email</TextField.Label>
+              isInvalid={emailError}>
+              <TextField.Label className="text-gray-200">Email</TextField.Label>
               <TextField.Input
+                colors={{
+                  blurBorder: "",
+                  focusBorder: "#3b82f6",
+                  blurBackground: "#272727",
+                  focusBackground: "#272727",
+                }}
                 value={email}
                 onChangeText={setEmail}
                 placeholder="mail@example.com"
+                placeholderTextColor={"#8b8b8b"}
                 inputMode="email"
                 autoCapitalize="none"
               />
@@ -69,9 +94,20 @@ const Login = () => {
               className="w-full mb-10"
               isRequired
               isDisabled={loading}
-              isInvalid={false}>
-              <TextField.Label>Contraseña</TextField.Label>
+              isInvalid={passwordError}>
+              <TextField.Label className="text-gray-200">
+                Contraseña
+              </TextField.Label>
               <TextField.Input
+                colors={{
+                  blurBorder: "",
+                  focusBorder: "#3b82f6",
+                  blurBackground: "#272727",
+                  focusBackground: "#272727",
+                }}
+                className="text-gray-200"
+                placeholderTextColor={"#8b8b8b"}
+                style={{ color: "white" }}
                 value={password}
                 onChangeText={setPassword}
                 placeholder="Ingresa tu contraseña"
@@ -108,13 +144,13 @@ const Login = () => {
           )}
 
           {/* Olvide mi contraseña */}
-          <Text className="text-center mt-4 text-gray-500">
+          <Text className="text-center mt-4 text-gray-300">
             Olvide mi contraseña
           </Text>
           {/* Crear cuenta |*/}
           <Button
             size="md"
-            variant="secondary"
+            variant="tertiary"
             isDisabled={loading}
             className="w-full mt-4 border-gray-500"
             onPress={() => {
