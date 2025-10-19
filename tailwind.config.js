@@ -6,6 +6,7 @@ module.exports = {
   content: [
     // App entry (Expo Router usa la carpeta ./app en lugar de App.tsx)
     "./app/**/*.{js,jsx,ts,tsx}",
+    "./Componentes/**/*.{js,jsx,ts,tsx}",
     // Componentes compartidos
     "./components/**/*.{js,jsx,ts,tsx}",
     // Ejemplos / otras rutas (opcional)

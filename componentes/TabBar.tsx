@@ -4,7 +4,7 @@ import { PlatformPressable } from "@react-navigation/elements";
 import { useLinkBuilder, useTheme } from "@react-navigation/native";
 import * as Haptics from "expo-haptics";
 import React from "react";
-import { Animated, StyleSheet, View } from "react-native";
+import { Animated, StyleSheet, Text, View } from "react-native";
 
 export function MyTabBar({
   state,
@@ -133,7 +133,7 @@ function TabBarButton({
     }
   }, [isFocused, scale]);
 
-  const color = isFocused ? colors.primary : colors.text;
+  const color = isFocused ? "#fff" : "#c5c5c5";
 
   return (
     <PlatformPressable
@@ -147,7 +147,7 @@ function TabBarButton({
       <Animated.View style={{ transform: [{ scale }] }}>
         {renderIcon({ color, size: 24, focused: isFocused })}
       </Animated.View>
-      {/* <Text style={{ color }}>{labelText}</Text> */}
+      <Text style={{ color }}>{labelText}</Text>
     </PlatformPressable>
   );
 }
@@ -159,9 +159,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "white",
-    opacity: 0.75,
-    marginHorizontal: 80,
+    backgroundColor: "#0f0f0f",
+    opacity: 0.8,
+    marginHorizontal: 50,
     paddingVertical: 15,
     borderRadius: 35,
     shadowColor: "#000",

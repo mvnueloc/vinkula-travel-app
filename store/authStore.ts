@@ -2,12 +2,13 @@ import { jwtDecode } from "jwt-decode";
 import { create } from "zustand";
 import { getItem, removeItem, setItem } from "./storage";
 
-const baseUrl = process.env.EXPO_PUBLIC_API_URL;
+const baseUrl = process.env.EXPO_PUBLIC_API_URL_USERS;
 
 interface User {
   name: string;
   lastName: string;
   email: string;
+  favoriteCategories?: string[];
 }
 
 interface AuthStore {
@@ -52,6 +53,8 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       console.log(data);
 
       const decodeToken = jwtDecode(data.token);
+
+      console.log(decodeToken);
 
       const authData = {
         isAuthenticated: true,

@@ -1,5 +1,13 @@
 import { MyTabBar } from "@/componentes/TabBar";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import {
+  Home2Outlined,
+  Home2Solid,
+  MapMarker1Outlined,
+  MapMarker1Solid,
+  User4Outlined,
+  User4Solid,
+} from "@lineiconshq/free-icons";
+import { Lineicons } from "@lineiconshq/react-native-lineicons";
 import { Tabs } from "expo-router";
 
 type Props = {};
@@ -11,39 +19,69 @@ export default function _layout({}: Props) {
         name="index"
         options={{
           headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons
-              name="home"
-              size={24}
-              color={color}
-            />
-          ),
+          title: "Inicio",
+          tabBarIcon: ({ color, size, focused }) =>
+            focused ? (
+              <Lineicons
+                icon={Home2Solid}
+                size={size}
+                color={color}
+                strokeWidth={2}
+              />
+            ) : (
+              <Lineicons
+                icon={Home2Outlined}
+                color={color}
+                size={size}
+                strokeWidth={2}
+              />
+            ),
         }}
       />
       <Tabs.Screen
         name="explore"
         options={{
           headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons
-              name="compass"
-              size={24}
-              color={color}
-            />
-          ),
+          title: "Explorar",
+          tabBarIcon: ({ color, size, focused }) =>
+            focused ? (
+              <Lineicons
+                icon={MapMarker1Solid}
+                color={color}
+                size={size}
+                strokeWidth={2}
+              />
+            ) : (
+              <Lineicons
+                icon={MapMarker1Outlined}
+                color={color}
+                size={size}
+                strokeWidth={2}
+              />
+            ),
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons
-              name="person"
-              size={24}
-              color={color}
-            />
-          ),
+          title: "Perfil",
+          tabBarIcon: ({ color, size, focused }) =>
+            focused ? (
+              <Lineicons
+                icon={User4Solid}
+                color={color}
+                size={size}
+                strokeWidth={2}
+              />
+            ) : (
+              <Lineicons
+                icon={User4Outlined}
+                color={color}
+                size={size}
+                strokeWidth={2}
+              />
+            ),
         }}
       />
     </Tabs>
