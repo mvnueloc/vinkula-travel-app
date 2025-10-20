@@ -1,32 +1,26 @@
-import { Ionicons } from "@expo/vector-icons";
-import * as Haptics from "expo-haptics";
+import BackgroundCarousel from "@/componentes/BackgroundCarousel";
+import { useAuthStore } from "@/store/authStore";
+import { FontAwesome } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { Card, ScrollShadow } from "heroui-native";
-import React, { useState } from "react";
+import { Card, TextField } from "heroui-native";
+import React from "react";
 import {
-  Alert,
   Image,
   ImageSourcePropType,
-  Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   View,
 } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-type Destination = {
-  title: string;
-  description: string;
-  coordinate: { latitude: number; longitude: number };
-  photo: ImageSourcePropType;
-};
-
-export default function App() {
-  const [selectedDestination, setSelectedDestination] =
-    useState<Destination | null>(null);
-  const mapRef = React.useRef<MapView>(null);
+const Index = () => {
+  type Destination = {
+    title: string;
+    description: string;
+    coordinate: { latitude: number; longitude: number };
+    photo: ImageSourcePropType;
+  };
 
   const destinations: Destination[] = [
     {
@@ -49,188 +43,89 @@ export default function App() {
     },
   ];
 
+  const { user } = useAuthStore();
   return (
-    <View style={styles.container}>
-      <MapView
-        ref={mapRef}
-        initialRegion={{
-          latitude: 20.980087,
-          longitude: -89.628525,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-        showsUserLocation={true}
-        showsPointsOfInterest={false}
-        style={styles.map}
-        userInterfaceStyle="dark">
-        {/* <Marker
-          coordinate={{ latitude: 20.980087, longitude: -89.628525 }}
-          isPreselected={true}
-          titleVisibility="visible"
-          subtitleVisibility="visible"
-          onPress={() =>
-            Alert.alert(
-              "Abc Hospital",
-              "This is a description of the hospital."
-            )
-          }>
-          <Image
-            source={require("../../assets/images/yucatan-3.jpg")}
-            style={{
-              height: 100,
-              width: 100,
-              aspectRatio: 1,
-              borderRadius: 12,
-            }}
-            resizeMode="cover"
-          />
-        </Marker> */}
-        {destinations.map((destination, index) => (
-          <Marker
-            key={index}
-            coordinate={destination.coordinate}
-            // title={destination.title}
-            // description={destination.description}
-            onPress={() =>
-              Alert.alert(destination.title, destination.description)
-            }>
-            <Image
-              source={destination.photo}
-              style={{
-                height: 100,
-                width: 100,
-                aspectRatio: 1,
-                borderRadius: 12,
-              }}
-              resizeMode="cover"
-            />
-          </Marker>
-        ))}
-      </MapView>
-
+    <SafeAreaView className="flex-1 justify-start items-center relative">
+      {/* Imagen de fondo */}
+      <BackgroundCarousel />
+      {/* Degradado negro arriba a transparente abajo */}
       <LinearGradient
-        colors={["rgba(0,0,0,1)", "rgba(0,0,0,0)"]}
+        colors={["rgba(0,0,0,1)", "rgba(0,0,0,0.0)"]}
+        locations={[0, 1]}
         start={{ x: 0.5, y: 0 }}
-        end={{ x: 0.5, y: 0.5 }}
-        pointerEvents="none"
-        style={[StyleSheet.absoluteFillObject, { height: 200 }]}
+        end={{ x: 0.5, y: 1 }}
+        style={StyleSheet.absoluteFillObject}
       />
-
-      <SafeAreaView className="absolute bottom-36">
-        <ScrollShadow
-          LinearGradientComponent={LinearGradient}
-          color="#111">
+      <View className="w-full">
+        <View className="mx-4">
+          {/* Avatar y saludo */}
+          <View className="flex-row justify-start items-center mt-4 ">
+            <View className="w-12 h-12 bg-cyan-700 rounded-full justify-center items-center mr-3">
+              <Text className="text-gray-200 font-semibold text-md text-center ">
+                {user?.name.charAt(0)}
+                {user?.lastName.charAt(0)}
+              </Text>
+            </View>
+            <Text className="text-gray-200 font-semibold text-md text-center ">
+              Hola, {user?.name}!
+            </Text>
+          </View>
+          {/* Barra de navegación */}
+          <TextField className="mt-4">
+            <TextField.Input placeholder="Buscar">
+              <TextField.InputStartContent className="pointer-events-none">
+                <FontAwesome
+                  name="search"
+                  size={20}
+                  color="#808080"
+                />
+              </TextField.InputStartContent>
+            </TextField.Input>
+          </TextField>
+          {/* Lugares recomendados */}
+          <Text className="text-gray-200 font-semibold text-lg  mt-8">
+            Lugares recomendados
+          </Text>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ paddingHorizontal: 16 }}
-            className="space-x-4 flex-row ">
-            {/* <Card
-              className="flex-row rounded-xl gap-4 p-4"
-              surfaceVariant="2">
-              <Image
-                source={require("../../assets/images/yucatan-3.jpg")}
-                style={{
-                  height: 50,
-                  width: 80,
-                  aspectRatio: 1,
-                  borderRadius: 12,
-                }}
-                resizeMode="cover"
-              />
-              <View className="gap-4">
-                <Card.Body className="mb-2">
-                  <Card.Title className="mb-1">Bringing the future</Card.Title>
-                  <Card.Description numberOfLines={2}>
-                    Today, 6:30 PM
-                  </Card.Description>
-                </Card.Body>
-                <Card.Footer>
-                  <Pressable className="flex-row items-center gap-1">
-                    <Text className="text-sm font-medium text-foreground">
-                      View Details
-                    </Text>
-                    <Ionicons
-                      name="open-outline"
-                      size={12}
-                    />
-                  </Pressable>
-                </Card.Footer>
-              </View>
-            </Card> */}
-
+            className="mt-3">
             {destinations.map((destination, index) => (
               <Card
                 key={index}
-                className="flex-row rounded-xl gap-4 p-4 mr-5 bg-black/70 border-gray-800"
-                surfaceVariant="2">
-                <Image
-                  source={destination.photo}
-                  style={{
-                    height: 50,
-                    width: 80,
-                    aspectRatio: 1,
-                    borderRadius: 12,
-                  }}
-                  resizeMode="cover"
-                />
+                surfaceVariant="2"
+                className="flex-1 rounded-xl max-w-56 mr-4 h-auto">
                 <View className="gap-4">
-                  <Card.Body className="mb-2">
-                    <Card.Title className="mb-1 text-gray-200">
+                  <Card.Header>
+                    <Image
+                      source={destination.photo}
+                      style={{
+                        height: 90,
+                        aspectRatio: 1,
+                        borderRadius: 12,
+                      }}
+                    />
+                  </Card.Header>
+                  <Card.Body>
+                    <Card.Title numberOfLines={1}>
                       {destination.title}
                     </Card.Title>
                     <Card.Description
-                      numberOfLines={2}
-                      className="text-gray-400">
+                      className="mb-4 whitespace-nowrap "
+                      numberOfLines={1}>
                       {destination.description}
                     </Card.Description>
                   </Card.Body>
-                  <Card.Footer>
-                    <Pressable
-                      className="flex-row items-center gap-1"
-                      onPress={() => {
-                        setSelectedDestination(destination);
-                        mapRef.current?.animateToRegion(
-                          {
-                            latitude: destination.coordinate.latitude,
-                            longitude: destination.coordinate.longitude,
-                            latitudeDelta: 0.01,
-                            longitudeDelta: 0.01,
-                          },
-                          1000
-                        );
-                        Haptics.notificationAsync(
-                          Haptics.NotificationFeedbackType.Success
-                        );
-                      }}>
-                      <Text className="text-lg font-medium text-gray-200">
-                        Ver
-                      </Text>
-                      <Ionicons
-                        name="open-outline"
-                        size={16}
-                        color={"#e5e7eb"}
-                      />
-                    </Pressable>
-                  </Card.Footer>
                 </View>
               </Card>
             ))}
           </ScrollView>
-        </ScrollShadow>
-      </SafeAreaView>
-    </View>
+        </View>
+      </View>
+    </SafeAreaView>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    position: "relative",
-  },
-  map: {
-    width: "100%",
-    height: "100%",
-    position: "relative",
-  },
-});
+const styles = StyleSheet.create({});
+
+export default Index;

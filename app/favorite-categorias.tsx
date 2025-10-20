@@ -158,7 +158,7 @@ export default function DialogNativeModalScreen() {
                 <Button
                   key={category.idCategory}
                   size="sm"
-                  variant={isSelected ? "primary" : "secondary"}
+                  variant={isSelected ? "secondary" : "primary"}
                   className={
                     isSelected ? "border border-blue-600 bg-blue-600/40" : ""
                   }
@@ -172,7 +172,10 @@ export default function DialogNativeModalScreen() {
           </View>
           {/* Botones de acción */}
           <View className="flex-row w-full justify-end mt-8">
-            <Button onPress={handleUpdateCategories}>
+            <Button
+              onPress={handleUpdateCategories}
+              variant="tertiary"
+              className="border-gray-500">
               Buscar nuevas categorias
             </Button>
           </View>

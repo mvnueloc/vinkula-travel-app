@@ -65,6 +65,54 @@ export default function RootLayout() {
                     headerTitle: "",
                   }}
                 />
+                <Stack.Screen
+                  name="edit-profile"
+                  options={{
+                    headerShown: true,
+                    headerStyle: {
+                      backgroundColor: "#0f0f0f",
+                    },
+                    headerLeft: () => (
+                      <Pressable
+                        onPress={() => router.back()}
+                        className="flex-row items-center">
+                        <Entypo
+                          name="chevron-left"
+                          size={24}
+                          color="#e5e7eb"
+                        />
+                        <Text className="text-gray-200">Regresar</Text>
+                      </Pressable>
+                    ),
+                    presentation: "formSheet",
+
+                    headerTitle: "",
+                  }}
+                />
+                <Stack.Screen
+                  name="favorite-places"
+                  options={{
+                    headerShown: true,
+                    headerStyle: {
+                      backgroundColor: "#0f0f0f",
+                    },
+                    headerLeft: () => (
+                      <Pressable
+                        onPress={() => router.back()}
+                        className="flex-row items-center">
+                        <Entypo
+                          name="chevron-left"
+                          size={24}
+                          color="#e5e7eb"
+                        />
+                        <Text className="text-gray-200">Regresar</Text>
+                      </Pressable>
+                    ),
+                    presentation: "formSheet",
+
+                    headerTitle: "",
+                  }}
+                />
               </Stack.Protected>
 
               <Stack.Protected guard={!isAuthenticated}>

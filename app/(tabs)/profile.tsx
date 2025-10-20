@@ -111,7 +111,7 @@ const Profile = () => {
               <Card.Body>
                 <Pressable
                   onPress={() => {
-                    router.push("../favorite-categorias");
+                    router.push("../edit-profile");
                   }}
                   className="items-center flex-row justify-between w-full">
                   <View className="flex-row gap-2 items-center">
@@ -155,7 +155,7 @@ const Profile = () => {
                 {/* Lugares favoritas */}
                 <Pressable
                   onPress={() => {
-                    router.push("../favorite-categorias");
+                    router.push("../favorite-places");
                   }}
                   className="items-center flex-row justify-between w-full">
                   <View className="flex-row gap-2 items-center">
