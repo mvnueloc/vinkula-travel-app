@@ -1,7 +1,6 @@
 import BackgroundCarousel from "@/componentes/BackgroundCarousel";
 import { DialogTextInput } from "@/componentes/DialogTextInput";
 import { useAuthStore } from "@/store/authStore";
-import { AntDesign } from "@expo/vector-icons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -111,7 +110,7 @@ const Profile = () => {
               <Card.Body>
                 <Pressable
                   onPress={() => {
-                    router.push("../edit-profile");
+                    router.push("../../edit-profile");
                   }}
                   className="items-center flex-row justify-between w-full">
                   <View className="flex-row gap-2 items-center">
@@ -129,33 +128,10 @@ const Profile = () => {
                   />
                 </Pressable>
                 <Divider className="my-3" />
-                {/* Categorias favoritas */}
+                {/* Regresa a ser turista */}
                 <Pressable
                   onPress={() => {
-                    router.push("../favorite-categorias");
-                  }}
-                  className="items-center flex-row justify-between w-full">
-                  <View className="flex-row gap-2 items-center">
-                    <AntDesign
-                      name="tags"
-                      size={16}
-                      color="#e5e7eb"
-                    />
-                    <Text className="text-lg text-gray-200">
-                      Categorias favoritas
-                    </Text>
-                  </View>
-                  <Ionicons
-                    name="chevron-forward"
-                    size={16}
-                    color={"#e5e7eb"}
-                  />
-                </Pressable>
-                <Divider className="my-3" />
-                {/* Lugares favoritas */}
-                <Pressable
-                  onPress={() => {
-                    router.push("../favorite-places");
+                    router.push("../../role-user-request");
                   }}
                   className="items-center flex-row justify-between w-full">
                   <View className="flex-row gap-2 items-center">
@@ -165,30 +141,7 @@ const Profile = () => {
                       color="#e5e7eb"
                     />
                     <Text className="text-lg text-gray-200">
-                      Lugares favoritos
-                    </Text>
-                  </View>
-                  <Ionicons
-                    name="chevron-forward"
-                    size={16}
-                    color={"#e5e7eb"}
-                  />
-                </Pressable>
-                <Divider className="my-3" />
-                {/* Conviertete en un proovedor */}
-                <Pressable
-                  onPress={() => {
-                    router.push("../role-provider-request");
-                  }}
-                  className="items-center flex-row justify-between w-full">
-                  <View className="flex-row gap-2 items-center">
-                    <MaterialIcons
-                      name="place"
-                      size={16}
-                      color="#e5e7eb"
-                    />
-                    <Text className="text-lg text-gray-200">
-                      Conviertete en un proveedor
+                      Regresa a ser turista
                     </Text>
                   </View>
                   <Ionicons

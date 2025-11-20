@@ -6,30 +6,49 @@ import { Button, Card, Spinner, TextField } from "heroui-native";
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-type Category = {
-  idCategory: string | number;
-  name: string;
-};
-
 export default function EditProfile() {
-  const { user } = useAuthStore();
+  const { user, updateUser } = useAuthStore();
+  // Estados para los campos del formulario
   const [name, setName] = useState(user?.name);
   const [lastName, setLastName] = useState(user?.lastName);
   const [email, setEmail] = useState(user?.email);
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   // Estados de error para validación
   const [nameError, setNameError] = useState(false);
   const [lastNameError, setLastNameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
   const handleUpdateProfile = async () => {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    console.log("Actualizado");
+    if (!name) {
+      setNameError(true);
+      return;
+    } else {
+      setNameError(false);
+    }
+
+    if (!lastName) {
+      setLastNameError(true);
+      return;
+    } else {
+      setLastNameError(false);
+    }
+
+    if (!email || !email.includes("@")) {
+      setEmailError(true);
+      return;
+    } else {
+      setEmailError(false);
+    }
+
+    setLoading(true);
+
+    const success = await updateUser(user?.idUser, name, lastName, email);
+
+    setLoading(false);
+
+    return success;
   };
 
   return (
@@ -122,52 +141,6 @@ export default function EditProfile() {
                 Por favor ingrese un email válido
               </TextField.ErrorMessage>
             </TextField>
-            {/* Password */}
-            {/* <TextField
-              className="w-full mb-10"
-              isRequired
-              isInvalid={passwordError}
-              isDisabled={loading}>
-              <TextField.Label>Contraseña</TextField.Label>
-              <TextField.Input
-                placeholder="Ingresa tu contraseña"
-                secureTextEntry
-                value={password}
-                onChangeText={setPassword}
-                colors={{
-                  blurBorder: "",
-                  focusBorder: "#3b82f6",
-                  blurBackground: "#272727",
-                  focusBackground: "#272727",
-                }}
-              />
-              <TextField.ErrorMessage>
-                Por favor ingrese una contraseña válida
-              </TextField.ErrorMessage>
-            </TextField> */}
-            {/* ConfirmPassword */}
-            {/* <TextField
-              className="w-full mb-10"
-              isRequired
-              isInvalid={confirmPasswordError}
-              isDisabled={loading}>
-              <TextField.Label>Repetir contraseña</TextField.Label>
-              <TextField.Input
-                placeholder="Repite tu contraseña"
-                secureTextEntry
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-                colors={{
-                  blurBorder: "",
-                  focusBorder: "#3b82f6",
-                  blurBackground: "#272727",
-                  focusBackground: "#272727",
-                }}
-              />
-              <TextField.ErrorMessage>
-                La contraseña no coincide
-              </TextField.ErrorMessage>
-            </TextField> */}
           </Card.Description>
           {/* Update Button */}
           {!loading && (

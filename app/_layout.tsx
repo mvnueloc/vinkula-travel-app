@@ -11,14 +11,19 @@ import { KeyboardProvider } from "react-native-keyboard-controller";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function RootLayout() {
-  const { isAuthenticated, checkAuth } = useAuthStore();
+  const { isAuthenticated, checkAuth, user } = useAuthStore();
   const [isLoading, setIsLoading] = useState(true);
   const { theme, colors, isDark } = useTheme();
+  let role = null;
 
   useEffect(() => {
     const init = async () => {
       checkAuth();
       setIsLoading(false);
+      if (user) {
+        console.log("User role:", user.role);
+        role = user.role;
+      }
     };
 
     init();
@@ -37,82 +42,162 @@ export default function RootLayout() {
             }}>
             <Stack>
               <Stack.Protected guard={isAuthenticated}>
-                <Stack.Screen
-                  name="(tabs)"
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="favorite-categorias"
-                  options={{
-                    headerShown: true,
-                    headerStyle: {
-                      backgroundColor: "#0f0f0f",
-                    },
-                    headerLeft: () => (
-                      <Pressable
-                        onPress={() => router.back()}
-                        className="flex-row items-center">
-                        <Entypo
-                          name="chevron-left"
-                          size={24}
-                          color="#e5e7eb"
-                        />
-                        <Text className="text-gray-200">Regresar</Text>
-                      </Pressable>
-                    ),
-                    presentation: "formSheet",
+                <Stack.Protected guard={user?.role === "user"}>
+                  <Stack.Screen
+                    name="(tabs)"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="favorite-categorias"
+                    options={{
+                      headerShown: true,
+                      headerStyle: {
+                        backgroundColor: "#0f0f0f",
+                      },
+                      headerLeft: () => (
+                        <Pressable
+                          onPress={() => router.back()}
+                          className="flex-row items-center">
+                          <Entypo
+                            name="chevron-left"
+                            size={24}
+                            color="#e5e7eb"
+                          />
+                          <Text className="text-gray-200">Regresar</Text>
+                        </Pressable>
+                      ),
+                      presentation: "formSheet",
 
-                    headerTitle: "",
-                  }}
-                />
-                <Stack.Screen
-                  name="edit-profile"
-                  options={{
-                    headerShown: true,
-                    headerStyle: {
-                      backgroundColor: "#0f0f0f",
-                    },
-                    headerLeft: () => (
-                      <Pressable
-                        onPress={() => router.back()}
-                        className="flex-row items-center">
-                        <Entypo
-                          name="chevron-left"
-                          size={24}
-                          color="#e5e7eb"
-                        />
-                        <Text className="text-gray-200">Regresar</Text>
-                      </Pressable>
-                    ),
-                    presentation: "formSheet",
+                      headerTitle: "",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="edit-profile"
+                    options={{
+                      headerShown: true,
+                      headerStyle: {
+                        backgroundColor: "#0f0f0f",
+                      },
+                      headerLeft: () => (
+                        <Pressable
+                          onPress={() => router.back()}
+                          className="flex-row items-center">
+                          <Entypo
+                            name="chevron-left"
+                            size={24}
+                            color="#e5e7eb"
+                          />
+                          <Text className="text-gray-200">Regresar</Text>
+                        </Pressable>
+                      ),
+                      presentation: "formSheet",
 
-                    headerTitle: "",
-                  }}
-                />
-                <Stack.Screen
-                  name="favorite-places"
-                  options={{
-                    headerShown: true,
-                    headerStyle: {
-                      backgroundColor: "#0f0f0f",
-                    },
-                    headerLeft: () => (
-                      <Pressable
-                        onPress={() => router.back()}
-                        className="flex-row items-center">
-                        <Entypo
-                          name="chevron-left"
-                          size={24}
-                          color="#e5e7eb"
-                        />
-                        <Text className="text-gray-200">Regresar</Text>
-                      </Pressable>
-                    ),
-                    presentation: "formSheet",
+                      headerTitle: "",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="favorite-places"
+                    options={{
+                      headerShown: true,
+                      headerStyle: {
+                        backgroundColor: "#0f0f0f",
+                      },
+                      headerLeft: () => (
+                        <Pressable
+                          onPress={() => router.back()}
+                          className="flex-row items-center">
+                          <Entypo
+                            name="chevron-left"
+                            size={24}
+                            color="#e5e7eb"
+                          />
+                          <Text className="text-gray-200">Regresar</Text>
+                        </Pressable>
+                      ),
+                      presentation: "formSheet",
 
-                    headerTitle: "",
-                  }}
-                />
+                      headerTitle: "",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="role-provider-request"
+                    options={{
+                      headerShown: true,
+                      headerStyle: {
+                        backgroundColor: "#0f0f0f",
+                      },
+                      headerLeft: () => (
+                        <Pressable
+                          onPress={() => router.back()}
+                          className="flex-row items-center">
+                          <Entypo
+                            name="chevron-left"
+                            size={24}
+                            color="#e5e7eb"
+                          />
+                          <Text className="text-gray-200">Regresar</Text>
+                        </Pressable>
+                      ),
+                      presentation: "formSheet",
+
+                      headerTitle: "",
+                    }}
+                  />
+                </Stack.Protected>
+                <Stack.Protected guard={user?.role === "provider"}>
+                  <Stack.Screen
+                    name="provider/(tabs)"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="edit-profile"
+                    options={{
+                      headerShown: true,
+                      headerStyle: {
+                        backgroundColor: "#0f0f0f",
+                      },
+                      headerLeft: () => (
+                        <Pressable
+                          onPress={() => router.back()}
+                          className="flex-row items-center">
+                          <Entypo
+                            name="chevron-left"
+                            size={24}
+                            color="#e5e7eb"
+                          />
+                          <Text className="text-gray-200">Regresar</Text>
+                        </Pressable>
+                      ),
+                      presentation: "formSheet",
+
+                      headerTitle: "",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="role-user-request"
+                    options={{
+                      headerShown: true,
+                      headerStyle: {
+                        backgroundColor: "#0f0f0f",
+                      },
+                      headerLeft: () => (
+                        <Pressable
+                          onPress={() => router.back()}
+                          className="flex-row items-center">
+                          <Entypo
+                            name="chevron-left"
+                            size={24}
+                            color="#e5e7eb"
+                          />
+                          <Text className="text-gray-200">Regresar</Text>
+                        </Pressable>
+                      ),
+                      presentation: "formSheet",
+
+                      headerTitle: "",
+                    }}
+                  />
+                </Stack.Protected>
               </Stack.Protected>
 
               <Stack.Protected guard={!isAuthenticated}>

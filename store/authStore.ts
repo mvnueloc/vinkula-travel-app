@@ -5,10 +5,12 @@ import { getItem, removeItem, setItem } from "./storage";
 const baseUrl = process.env.EXPO_PUBLIC_API_URL_USERS;
 
 interface User {
+  idUser: string;
   name: string;
   lastName: string;
   email: string;
   favoriteCategories?: string[];
+  role?: string;
 }
 
 interface AuthStore {
@@ -26,7 +28,14 @@ interface AuthStore {
     email: string,
     password: string
   ) => Promise<boolean>;
-  checkAuth: () => void;
+  checkAuth: () => Promise<boolean>;
+  updateUser: (
+    idUser?: string,
+    name?: string,
+    lastName?: string,
+    email?: string
+  ) => Promise<boolean>;
+  roleProviderRequest: (role?: string, idUser?: string) => Promise<boolean>;
 }
 
 export const useAuthStore = create<AuthStore>((set, get) => ({
@@ -58,7 +67,6 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
       const authData = {
         isAuthenticated: true,
-
         accessToken: null,
         user: decodeToken as User,
         accesTokenExpiration: null,
@@ -112,7 +120,6 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
       const authData = {
         isAuthenticated: true,
-
         accessToken: null,
         user: data.user as User,
         accesTokenExpiration: null,
@@ -139,5 +146,101 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       return true;
     }
     return false;
+  },
+
+  updateUser: async (
+    idUser?: string,
+    name?: string,
+    lastName?: string,
+    email?: string
+  ) => {
+    const updateUser: {
+      idUser?: string;
+      name?: string;
+      lastName?: string;
+      email?: string;
+    } = {};
+
+    if (idUser) updateUser["idUser"] = idUser;
+    if (name) updateUser["name"] = name;
+    if (lastName) updateUser["lastName"] = lastName;
+    if (email) updateUser["email"] = email;
+    try {
+      const response = await fetch(`${baseUrl}/edit-user`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updateUser),
+      });
+
+      if (!response.ok) {
+        throw new Error("Update failed");
+      }
+
+      const data = await response.json();
+
+      if (data?.message === "User updated successfully") {
+        // console.log("Update user response data:", data);
+
+        const authData = await getItem("authData");
+        if (authData && authData.user) {
+          authData.user.name = name;
+          authData.user.lastName = lastName;
+          authData.user.email = email;
+
+          set(authData);
+          await setItem("authData", authData);
+        }
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Update user error:", error);
+      return false;
+    }
+  },
+
+  roleProviderRequest: async (role?: string, idUser?: string) => {
+    const updateUser: {
+      role?: string;
+      idUser?: string;
+    } = {};
+
+    if (role) updateUser["role"] = role;
+    if (idUser) updateUser["idUser"] = idUser;
+    console.log("Updating user with data:", updateUser);
+    try {
+      const response = await fetch(`${baseUrl}/edit-user`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updateUser),
+      });
+
+      if (!response.ok) {
+        throw new Error("Update failed");
+      }
+
+      const data = await response.json();
+
+      if (data?.message === "User updated successfully") {
+        // console.log("Update user response data:", data);
+
+        const authData = await getItem("authData");
+        if (authData && authData.user) {
+          authData.user.role = role;
+
+          set(authData);
+          await setItem("authData", authData);
+        }
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Update user error:", error);
+      return false;
+    }
   },
 }));
